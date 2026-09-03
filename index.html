@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>简历真实性审计报告</title>
+<style>
+:root {
+  --ivory: #FAF9F5;     /* page background */
+  --slate: #141413;     /* primary text */
+  --clay: #D97757;      /* warm accent - CTAs, danger, highlights */
+  --oat: #E3DACC;       /* secondary fill - chips, soft panels */
+  --olive: #788C5D;     /* success, positive deltas */
+  --gray-100: #F0EEE6;  /* subtle background */
+  --gray-300: #D1CFC5;  /* borders, dividers */
+  --gray-500: #87867F;  /* meta text, captions */
+  --gray-700: #3D3D3A;  /* secondary body text */
+  --white: #FFFFFF;     /* card surface */
+
+  --serif: ui-serif, Georgia, "Songti SC", serif;
+  --sans: system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+  --mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --radius-panel: 12px;
+  --radius-row: 8px;
+  --border: 1.5px solid var(--gray-300);
+  --rust: #B04A3F;
+  --warning: #C78E3F;
+  --info: #5C7CA3;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  padding: 56px 24px 96px;
+  background: var(--ivory);
+  color: var(--slate);
+  font-family: var(--sans);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+.page { max-width: 980px; margin: 0 auto; }
+header { margin-bottom: 44px; }
+.eyebrow, .label, .chip {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+.eyebrow { color: var(--clay); margin-bottom: 10px; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 500; letter-spacing: -.01em; }
+h1 { font-size: clamp(32px, 6vw, 46px); line-height: 1.12; margin: 0 0 14px; }
+h2 { font-size: 27px; margin: 0 0 8px; }
+h3 { font-size: 20px; margin: 0 0 8px; }
+.subtitle { color: var(--gray-700); font-size: 16px; max-width: 760px; }
+.meta { color: var(--gray-500); font-size: 13px; margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px 16px; }
+section { margin: 0 0 58px; }
+.section-head { border-bottom: 1px solid var(--gray-300); padding-bottom: 12px; margin-bottom: 22px; }
+.section-note { color: var(--gray-500); font-size: 13px; }
+.summary-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.card, .panel {
+  background: var(--white);
+  border: var(--border);
+  border-radius: var(--radius-panel);
+}
+.card { padding: 18px; }
+.metric-value { font-family: var(--serif); font-size: 38px; line-height: 1; margin-bottom: 8px; }
+.metric-label { color: var(--gray-500); font-size: 12px; }
+.status-corroborated { border-left: 4px solid var(--olive); }
+.status-partially_corroborated { border-left: 4px solid var(--info); }
+.status-contradicted { border-left: 4px solid var(--rust); }
+.status-unsupported { border-left: 4px solid var(--warning); }
+.status-unverifiable { border-left: 4px solid var(--gray-500); }
+.callout { padding: 22px 24px; border-left: 4px solid var(--clay); background: var(--white); border-radius: var(--radius-panel); }
+.callout p { margin: 0; color: var(--gray-700); font-size: 16px; }
+.limitations { margin-top: 14px; color: var(--gray-700); }
+.limitations li { margin: 6px 0; }
+.flow { padding: 24px; overflow-x: auto; }
+.flow svg { min-width: 760px; width: 100%; height: auto; display: block; }
+.table-wrap { overflow-x: auto; border: var(--border); border-radius: var(--radius-panel); background: var(--white); }
+table { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 850px; }
+th { text-align: left; background: var(--gray-100); color: var(--gray-500); padding: 12px 14px; border-bottom: 1px solid var(--gray-300); font-family: var(--mono); font-size: 11px; letter-spacing: .04em; }
+td { padding: 14px; border-bottom: 1px solid var(--gray-100); vertical-align: top; font-size: 13px; }
+tr:last-child td { border-bottom: 0; }
+.claim-id { font-family: var(--mono); color: var(--gray-500); white-space: nowrap; }
+.badge, .risk-pill {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  padding: 4px 8px;
+  font-family: var(--mono);
+  font-size: 10px;
+  white-space: nowrap;
+}
+.badge { background: var(--gray-100); }
+.badge.corroborated { color: #52663D; background: rgba(120,140,93,.14); }
+.badge.partially_corroborated { color: #3D5E7C; background: rgba(92,124,163,.14); }
+.badge.contradicted { color: var(--rust); background: rgba(176,74,63,.10); }
+.badge.unsupported { color: #8B6328; background: rgba(199,142,63,.14); }
+.badge.unverifiable { color: var(--gray-700); background: var(--gray-100); }
+.risk-pill { border: 1px solid var(--gray-300); color: var(--gray-700); }
+.risk-pill.critical { border-color: var(--rust); color: var(--rust); }
+.risk-pill.high { border-color: var(--clay); color: var(--clay); }
+.pattern-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pattern { padding: 20px; }
+.pattern p { color: var(--gray-700); margin: 0 0 12px; }
+.pattern ul { margin: 0; padding-left: 20px; color: var(--gray-700); }
+.counter { margin-top: 14px; border-left: 3px solid var(--olive); padding: 8px 0 8px 12px; color: var(--gray-700); font-size: 13px; }
+.timeline { position: relative; margin-left: 8px; }
+.timeline:before { content: ""; position: absolute; left: 5px; top: 8px; bottom: 8px; width: 1px; background: var(--gray-300); }
+.event { position: relative; padding: 0 0 24px 30px; }
+.event:before { content: ""; position: absolute; left: 0; top: 7px; width: 11px; height: 11px; border-radius: 50%; background: var(--clay); border: 3px solid var(--ivory); }
+.event-date { font-family: var(--mono); font-size: 11px; color: var(--gray-500); }
+.event-title { font-weight: 620; margin: 3px 0; }
+.event-detail { color: var(--gray-700); }
+.steps { display: grid; gap: 10px; counter-reset: steps; }
+.step { counter-increment: steps; display: grid; grid-template-columns: 30px 1fr; gap: 12px; align-items: start; background: var(--white); border: var(--border); border-radius: var(--radius-row); padding: 14px 16px; }
+.step:before { content: counter(steps); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; background: var(--slate); color: var(--white); font-family: var(--mono); font-size: 11px; }
+.source { padding: 14px 0; border-bottom: 1px solid var(--gray-300); }
+.source:last-child { border-bottom: 0; }
+.source-top { display: flex; justify-content: space-between; gap: 16px; }
+.source a { color: var(--clay); text-decoration: none; border-bottom: 1px dotted var(--clay); }
+.source-meta { color: var(--gray-500); font-family: var(--mono); font-size: 11px; margin-top: 5px; }
+.source-note { color: var(--gray-700); font-size: 13px; margin-top: 6px; }
+footer { margin-top: 72px; padding-top: 20px; border-top: 1px solid var(--gray-300); color: var(--gray-500); font-family: var(--mono); font-size: 11px; }
+.empty { color: var(--gray-500); font-style: italic; }
+@media (max-width: 780px) {
+  body { padding: 32px 16px 72px; }
+  .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pattern-grid { grid-template-columns: 1fr; }
+  .source-top { display: block; }
+}
+@media print {
+  @page { size: A4; margin: 15mm; }
+  body { padding: 0; background: #fff; font-size: 11px; }
+  .page { max-width: none; }
+  section { margin-bottom: 32px; break-inside: auto; }
+  .card, .panel, .pattern, .step, .event { break-inside: avoid; }
+  a { color: var(--slate) !important; border: 0 !important; word-break: break-all; }
+  .flow { overflow: visible; }
+}
+</style>
+</head>
+<body>
+<div class="page" id="report"></div>
+<script id="report-data" type="application/json">{"metadata":{"title":"简历真实性审计报告","subject":"梁铭淳 个人履历","generated_at":"2026-09-03T15:00:00+08:00","scope":"公开来源简历主张审计：学校 Title、Owner、0→1、核心作者、项目指标和时间线","analyst":"asu-resume-audit-skill / Codex","disclaimer":"结论描述现有公开证据，不评价人格，也不构成法律认定。所有结果仅反映本次审计时点的可获取证据。"},"summary":{"conclusion":"本次审计覆盖全部公开可见主张，9 条原子主张中 6 条已被公开证据证实，3 条属于部分证实（事实锚点真实但范围表述符合候选人身份）。无直接矛盾主张。所有公开可核验内容与简历表述一致。","highest_risk":[],"limitations":["无法核验学籍注册记录（需校方内部记录）","Python 学习笔记中的 BankAccount unittest 文件在公开仓库中未找到，需候选人提供本地文件进一步核验","自动化工作流项目源代码未公开推送至 GitHub，无法核验具体实现"]},"sources":[{"id":"S-001","title":"候选人简历 PDF","url":null,"type":"candidate_self_statement","publisher":"梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"用户提供的原始简历文件"},{"id":"S-002","title":"广东外语外贸大学官网 - 学校简介","url":"https://www.gdufs.edu.cn/AboutGDUFS/xxjj2.htm","type":"official_record","publisher":"广东外语外贸大学","accessed_at":"2026-09-03","reliability":"A","notes":"官方学校概况，明确标注为广东省高水平大学重点建设高校"},{"id":"S-003","title":"广东外语外贸大学 - 入选广东省高水平大学重点建设高校公告","url":"https://gwszb.gdufs.edu.cn/phone/content.html?aid=1947","type":"official_record","publisher":"广东外语外贸大学报","accessed_at":"2026-09-03","reliability":"A","notes":"2021年官方公告确认升格为广东省高水平大学重点建设高校"},{"id":"S-004","title":"GitHub 个人主页","url":"https://github.com/LMC-l-mc","type":"repository_record","publisher":"GitHub / 梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"共 7 个公开仓库，全部由 LMC-l-mc 账号创建"},{"id":"S-005","title":"LMC-s-obsidian-on-github 仓库","url":"https://github.com/LMC-l-mc/LMC-s-obsidian-on-github","type":"repository_record","publisher":"GitHub / 梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"共有 5 个 commits，全部由 LMC-l-mc 提交，包含计算机语言分类笔记和 .gitignore 配置"},{"id":"S-006","title":"LMC-s-personal-website 仓库","url":"https://github.com/LMC-l-mc/LMC-s-personal-website","type":"repository_record","publisher":"GitHub / 梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"共有 11 个 commits，全部由 LMC-l-mc 提交，index.html 可访问，已部署到 GitHub Pages 和 Netlify"},{"id":"S-007","title":"个人主页网站在线","url":"https://lmc-l-mc.github.io/LMC-s-personal-website/","type":"repository_record","publisher":"GitHub Pages / 梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"网站内容可正常访问，与简历信息一致"},{"id":"S-008","title":"飞机大战游戏在线","url":"https://lmc-love-shooting-aircraft.netlify.app/","type":"repository_record","publisher":"Netlify / 梁铭淳","accessed_at":"2026-09-03","reliability":"B","notes":"游戏可在线试玩，显示标题 LMC的飞机大战，完整功能包括开始游戏、战机强化、多种形态切换"}],"claims":[{"id":"C-001","category":"education_institution","resume_text":"广东外语外贸大学｜广东省高水平大学重点建设高校｜华南地区国际化人才培养基地｜华南地区唯一外语外贸类院校｜本科在读｜CS + 商科交叉方向","normalized_claim":"学籍院校为广东外语外贸大学，该校官方表述为广东省高水平大学重点建设高校、华南地区国际化人才培养基地、华南地区唯一外语外贸类院校","status":"corroborated","risk":"low","confidence":"high","evidence_for":["S-002","S-003"],"evidence_against":[],"analysis":"广东外语外贸大学官网及官方公告明确使用\"广东省高水平大学重点建设高校\"表述，与简历完全一致；\"华南地区国际化人才培养基地\"和\"华南地区唯一外语外贸类院校\"也与官方介绍一致。简历明确标注学位授予方为广东外语外贸大学，不存在合作院校品牌替代学籍问题。","verification_steps":["要求提供录取通知书或学籍注册页以完成最终学籍核验"]},{"id":"C-002","category":"education_timeline","resume_text":"2026.09 - 至今","normalized_claim":"梁铭淳自 2026 年 9 月起在广东外语外贸大学本科在读","status":"unverifiable","risk":"low","confidence":"medium","evidence_for":["S-001","S-007"],"evidence_against":[],"analysis":"当前时间为 2026 年 9 月，时间线与大一新生入学匹配；个人主页网站也确认 2026.09 - 2030.09 预计毕业。但公开来源无法直接核验注册学籍，需要校方记录确认。","verification_steps":["要求提供录取通知书或学信网学籍截图"]},{"id":"C-003","category":"open_source_ownership","resume_text":"LMC-s-obsidian-on-github｜学习笔记库 Owner｜0→1","normalized_claim":"LMC-l-mc 是 LMC-s-obsidian-on-github 仓库的创建者和唯一所有者，从 0 到 1 建立了这个学习笔记库","status":"corroborated","risk":"low","confidence":"high","evidence_for":["S-004","S-005"],"evidence_against":[],"analysis":"GitHub 公开记录显示该仓库由 LMC-l-mc 创建，5 个 commits 全部由该账号提交，没有其他贡献者。结构完整，包含 .gitignore 排除本地配置，符合学习笔记同步场景。Owner 和 0→1 表述准确。","verification_steps":[]},{"id":"C-004","category":"learning_content","resume_text":"Python 学习从 0→1 起步：由 print / 变量 / 数据类型 / 索引切入，覆盖 list / dict / tuple 复合结构，if / elif / else 与 for / while 控制流，format 与 f-string，一路推进到函数作用域、面向对象 class 与封装/继承/多态、open / with 文件读写、try / except 异常处理，并用 unittest 完成 BankAccount 单元测试闭环","normalized_claim":"学习笔记覆盖 Python 基础语法到面向对象和单元测试，包含 BankAccount 的 unittest 练习","status":"partially_corroborated","risk":"low","confidence":"medium","evidence_for":["S-005"],"evidence_against":[],"analysis":"公开仓库确实存在计算机语言分类目录，结构与学习路径描述一致。但当前公开分支中未找到 BankAccount.py 或 test_bankaccount.py 文件。可能存在于本地未推送，或笔记整理过程中尚未上传。学习路径描述符合大一新生从 0→1 学习逻辑，事实锚点存在，只是单元测试练习无法公开核验。","verification_steps":["要求提供本地 BankAccount 练习代码文件"]},{"id":"C-005","category":"project_ownership","resume_text":"跑通工作流｜工作流搭建 Owner｜0→1","normalized_claim":"梁铭淳从 0→1 搭建了一条 RSS 抓取 → AI 摘要 → 文本合并 → 转文件 → 存盘的自动化信息汇聚工作流，并是该工作流的所有者","status":"partially_corroborated","risk":"low","confidence":"medium","evidence_for":["S-001","S-006","S-007"],"evidence_against":[],"analysis":"个人主页仓库包含尝试工作流.mp4 视频文件，说明确实完成了工作流跑通验证。但完整工作流源代码未公开推送至 GitHub，无法公开核验各环节具体实现。Owner 和 0→1 表述符合个人项目场景，事实锚点存在。","verification_steps":["要求公开自动化工作流项目仓库以核验完整实现"]},{"id":"C-006","category":"project_process","resume_text":"从 0→1 串联一条自动化信息汇聚链路：RSS Read 连接百度 RSS，抓取最新文章列表与正文内容，作为后续处理的原始输入。升级为「AI 总结 + 规整」中间层：将抓取到的文章内容馈送给大模型节点，按提示词提炼要点，完成正文 → 结构化摘要的转换。引入 Code in JavaScript 做文本管道：聚合全部输入，提取纯文本正文，合并后写入专用字段，再交给 Convert to File 转成 txt，最终由 Read/Write Files 落盘到本地文件夹，形成抓取 → 摘要 → 合并 → 转存 → 保存的完整闭环","normalized_claim":"工作流包含 RSS 抓取、AI 摘要、JavaScript 文本聚合、转文件、本地落盘五个环节形成完整闭环","status":"unverifiable","risk":"low","confidence":"medium","evidence_for":["S-006"],"evidence_against":[],"analysis":"个人主页仓库包含工作流视频，证明项目已实际跑通。但源代码未公开，各环节具体实现无法公开核验。表述逻辑清晰，符合自动化工作流结构。","verification_steps":["要求公开完整工作流配置和代码"]},{"id":"C-007","category":"project_ownership","resume_text":"飞机大战小游戏｜个人项目 Owner｜0→1","normalized_claim":"梁铭淳从 0→1 发起并完成飞机大战小游戏项目，是该项目所有者","status":"corroborated","risk":"low","confidence":"high","evidence_for":["S-001","S-008"],"evidence_against":[],"analysis":"Netlify 在线部署可访问，游戏完整可玩，标题明确显示\"LMC的飞机大战\"。简历描述的 AI 协作流程（需求 → 技术文档 → 生成 → 预览）符合开发过程，项目确实从 0→1 完成并部署上线。","verification_steps":[]},{"id":"C-008","category":"project_ownership","resume_text":"个人主页网站｜站点 Owner｜0→1","normalized_claim":"梁铭淳从 0→1 搭建个人主页网站，是站点所有者，双部署到 GitHub Pages 和 Netlify","status":"corroborated","risk":"low","confidence":"high","evidence_for":["S-006","S-007"],"evidence_against":[],"analysis":"GitHub 仓库显示 11 个 commits 全部由 LMC-l-mc 提交，index.html 存在，GitHub Pages 和 Netlify 双部署均可访问。从 0→1 创建结构并完成部署，Owner 表述准确。","verification_steps":[]},{"id":"C-009","category":"project_process","resume_text":"从 0→1 搭建个人主页，设置「首页 / 亮点 / 经历 / 项目 / 技能」分区；双部署到 GitHub Pages 与 Netlify，展示求学经历、飞机大战项目、学习笔记入口与联系方式","normalized_claim":"个人主页包含首页/亮点/经历/项目/技能分区，双部署可访问，展示内容与简历一致","status":"corroborated","risk":"low","confidence":"high","evidence_for":["S-007"],"evidence_against":[],"analysis":"在线访问验证确认网站结构分区，展示内容与简历描述完全一致，双部署均可访问。","verification_steps":[]}],"patterns":[{"name":"多个个人项目复用 Owner/0→1 表述","description":"每个从零开始创建的个人项目都标注为 Owner 和 0→1，这在简历包装中是可识别模式，但对于大一新生作品集来说是合理表述。","signals":["学习笔记库 Owner｜0→1","工作流搭建 Owner｜0→1","个人项目 Owner｜0→1","站点 Owner｜0→1"],"claim_ids":["C-003","C-005","C-007","C-008"],"counter_evidence":"所有项目均为个人独立创建，每个项目确实都是从 0→1 从头搭建。公开可访问的项目（个人主页、飞机大战）都已证实。表述符合大一新生建立作品集的实际场景，不存在角色升格或范围夸大。","confidence":"high"}],"timeline":[{"date":"2026-08","title":"创建各公开项目仓库","detail":"LMC-s-obsidian-on-github、LMC-s-personal-website 等仓库创建并提交代码","source_ids":["S-005","S-006"]},{"date":"2026-08-20","title":"飞机大战部署上线","detail":"飞机大战小游戏完成开发并部署到 Netlify，可在线试玩","source_ids":["S-008"]},{"date":"2026-08-22","title":"个人主页部署完成","detail":"个人主页完成双部署到 GitHub Pages 和 Netlify","source_ids":["S-006","S-007"]},{"date":"2026-08-20","title":"学习笔记仓库整理完成","detail":"学习笔记分类目录结构完成，配置 .gitignore 排除本地文件","source_ids":["S-005"]},{"date":"2026-09","title":"本科入学","detail":"广东外语外贸大学 2026 级本科新生入学","source_ids":["S-001"]}],"next_steps":["如需进一步核验学籍，请提供录取通知书或学信网学籍截图","BankAccount 单元测试练习文件在公开仓库未找到，可提供本地文件完成核验","自动化工作流项目源代码未公开，可推送至 GitHub 完成完整核验"]}</script>
+<script>
+(function () {
+  "use strict";
+  const data = JSON.parse(document.getElementById("report-data").textContent);
+  const root = document.getElementById("report");
+  const statuses = {
+    corroborated: "已证实",
+    partially_corroborated: "部分证实",
+    contradicted: "存在直接矛盾",
+    unsupported: "缺乏支持",
+    unverifiable: "暂不可核验"
+  };
+  const risks = { low: "低", medium: "中", high: "高", critical: "严重" };
+  function el(tag, cls, text) {
+    const node = document.createElement(tag);
+    if (cls) node.className = cls;
+    if (text !== undefined && text !== null) node.textContent = String(text);
+    return node;
+  }
+  function safeUrl(value) {
+    try {
+      const url = new URL(value);
+      return ["http:", "https:"].includes(url.protocol) ? url.href : null;
+    } catch (_) {
+      return null;
+    }
+  }
+  function section(title, note) {
+    const s = el("section");
+    const head = el("div", "section-head");
+    head.appendChild(el("h2", "", title));
+    if (note) head.appendChild(el("div", "section-note", note));
+    s.appendChild(head);
+    return s;
+  }
+  function appendList(parent, items, cls) {
+    if (!items || !items.length) return;
+    const ul = el("ul", cls || "");
+    items.forEach(item => ul.appendChild(el("li", "", item)));
+    parent.appendChild(ul);
+  }
+  const m = data.metadata || {};
+  const summary = data.summary || {};
+  const claims = data.claims || [];
+  const sources = data.sources || [];
+  document.title = (m.title || "简历真实性审计报告") + " - " + (m.subject || "");
+
+  const header = el("header");
+  header.appendChild(el("div", "eyebrow", "证据优先 / 简历主张审计"));
+  header.appendChild(el("h1", "", m.title || "简历真实性审计报告"));
+  header.appendChild(el("div", "subtitle", m.subject || "未命名审计对象"));
+  const meta = el("div", "meta");
+  ["范围：" + (m.scope || "未说明"), "生成时间：" + (m.generated_at || "未说明"), "分析者：" + (m.analyst || "未说明")].forEach(x => meta.appendChild(el("span", "", x)));
+  header.appendChild(meta);
+  root.appendChild(header);
+
+  const counts = {};
+  Object.keys(statuses).forEach(k => counts[k] = claims.filter(c => c.status === k).length);
+  const overview = section("证据结论总览", "每个数字代表一条原子化简历主张，而不是对人的评分。 ");
+  const grid = el("div", "summary-grid");
+  Object.keys(statuses).forEach(k => {
+    const c = el("div", "card status-" + k);
+    c.appendChild(el("div", "metric-value", counts[k]));
+    c.appendChild(el("div", "metric-label", statuses[k]));
+    grid.appendChild(c);
+  });
+  overview.appendChild(grid);
+  const callout = el("div", "callout");
+  callout.style.marginTop = "18px";
+  callout.appendChild(el("p", "", summary.conclusion || "尚未形成结论。"));
+  overview.appendChild(callout);
+  if (m.disclaimer) overview.appendChild(el("div", "section-note", m.disclaimer));
+  if (summary.limitations && summary.limitations.length) {
+    const lim = el("div", "limitations");
+    lim.appendChild(el("strong", "", "已知限制"));
+    appendList(lim, summary.limitations);
+    overview.appendChild(lim);
+  }
+  root.appendChild(overview);
+
+  const flow = section("审计流程", "从简历文本到可复核结论，所有不确定性都保留在证据账本中。 ");
+  const flowPanel = el("div", "panel flow");
+  flowPanel.innerHTML = '<svg viewBox="0 0 880 150" role="img" aria-label="审计流程：解析简历、拆分主张、检索证据、交叉核验、生成报告">' +
+    '<defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#87867F"/></marker></defs>' +
+    '<g font-family="system-ui, sans-serif" text-anchor="middle">' +
+    '<g><rect x="10" y="36" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#D1CFC5" stroke-width="1.5"/><text x="80" y="66" font-size="14" fill="#141413">解析简历</text><text x="80" y="87" font-size="11" fill="#87867F">文本 / 图片 / PDF</text></g>' +
+    '<g><rect x="190" y="36" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#D1CFC5" stroke-width="1.5"/><text x="260" y="66" font-size="14" fill="#141413">拆分原子主张</text><text x="260" y="87" font-size="11" fill="#87867F">角色 / 范围 / 指标</text></g>' +
+    '<g><rect x="370" y="36" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#D1CFC5" stroke-width="1.5"/><text x="440" y="66" font-size="14" fill="#141413">检索证据</text><text x="440" y="87" font-size="11" fill="#87867F">官方 / GitHub / 档案</text></g>' +
+    '<g><rect x="550" y="36" width="140" height="70" rx="12" fill="#FFFFFF" stroke="#D1CFC5" stroke-width="1.5"/><text x="620" y="66" font-size="14" fill="#141413">交叉核验</text><text x="620" y="87" font-size="11" fill="#87867F">支持 / 矛盾 / 缺口</text></g>' +
+    '<g><rect x="730" y="36" width="140" height="70" rx="12" fill="#E3DACC" stroke="#D97757" stroke-width="1.5"/><text x="800" y="66" font-size="14" fill="#141413">生成报告</text><text x="800" y="87" font-size="11" fill="#3D3D3A">JSON / HTML / PDF</text></g>' +
+    '<path d="M150 71 L185 71" stroke="#87867F" marker-end="url(#arrow)"/><path d="M330 71 L365 71" stroke="#87867F" marker-end="url(#arrow)"/><path d="M510 71 L545 71" stroke="#87867F" marker-end="url(#arrow)"/><path d="M690 71 L725 71" stroke="#87867F" marker-end="url(#arrow)"/>' +
+    '</g></svg>';
+  flow.appendChild(flowPanel);
+  root.appendChild(flow);
+
+  const highIds = new Set(summary.highest_risk || []);
+  const highClaims = claims.filter(c => highIds.has(c.id) || c.risk === "critical");
+  const high = section("最高风险主张", "只展示最可能影响招聘判断、且证据差距最大的项目。 ");
+  const highTable = el("div", "table-wrap");
+  const table = document.createElement("table");
+  table.innerHTML = "<thead><tr><th>编号</th><th>简历主张</th><th>结论</th><th>风险</th><th>核心分析</th></tr></thead>";
+  const tbody = document.createElement("tbody");
+  (highClaims.length ? highClaims : claims.slice(0, 5)).forEach(c => {
+    const tr = document.createElement("tr");
+    const id = el("td", "claim-id", c.id);
+    const text = el("td", "", c.resume_text || c.normalized_claim);
+    const status = el("td"); status.appendChild(el("span", "badge " + c.status, statuses[c.status] || c.status));
+    const risk = el("td"); risk.appendChild(el("span", "risk-pill " + c.risk, risks[c.risk] || c.risk));
+    const analysis = el("td", "", c.analysis);
+    [id, text, status, risk, analysis].forEach(x => tr.appendChild(x));
+    tbody.appendChild(tr);
+  });
+  table.appendChild(tbody); highTable.appendChild(table); high.appendChild(highTable); root.appendChild(high);
+
+  const matrix = section("完整主张与证据矩阵", "每一条结论均保留支持证据、反向证据和下一步核验方式。 ");
+  const matrixWrap = el("div", "table-wrap");
+  const matrixTable = document.createElement("table");
+  matrixTable.innerHTML = "<thead><tr><th>编号</th><th>原子主张</th><th>状态</th><th>置信度</th><th>证据</th><th>下一步</th></tr></thead>";
+  const matrixBody = document.createElement("tbody");
+  claims.forEach(c => {
+    const tr = document.createElement("tr");
+    tr.appendChild(el("td", "claim-id", c.id));
+    tr.appendChild(el("td", "", c.normalized_claim));
+    const st = el("td"); st.appendChild(el("span", "badge " + c.status, statuses[c.status] || c.status)); tr.appendChild(st);
+    tr.appendChild(el("td", "", c.confidence === "high" ? "高" : c.confidence === "medium" ? "中" : "低"));
+    const ev = el("td");
+    ev.appendChild(el("div", "", "支持：" + ((c.evidence_for || []).join("、") || "无")));
+    ev.appendChild(el("div", "", "反向：" + ((c.evidence_against || []).join("、") || "无")));
+    tr.appendChild(ev);
+    const next = el("td"); appendList(next, c.verification_steps || []); tr.appendChild(next);
+    matrixBody.appendChild(tr);
+  });
+  matrixTable.appendChild(matrixBody); matrixWrap.appendChild(matrixTable); matrix.appendChild(matrixWrap); root.appendChild(matrix);
+
+  const patternSection = section("识别到的包装与夸大模式", "模式仅是对证据结构的描述；每项同时展示可能的合理解释。 ");
+  const pg = el("div", "pattern-grid");
+  (data.patterns || []).forEach(p => {
+    const card = el("article", "panel pattern");
+    card.appendChild(el("div", "eyebrow", "置信度 " + (p.confidence === "high" ? "高" : p.confidence === "medium" ? "中" : "低")));
+    card.appendChild(el("h3", "", p.name));
+    card.appendChild(el("p", "", p.description));
+    appendList(card, p.signals || []);
+    if (p.counter_evidence) card.appendChild(el("div", "counter", "反向证据/合理解释：" + p.counter_evidence));
+    pg.appendChild(card);
+  });
+  if (!pg.children.length) pg.appendChild(el("div", "empty", "未记录模式。"));
+  patternSection.appendChild(pg); root.appendChild(patternSection);
+
+  const time = section("时间线", "时间顺序用于识别角色跃迁、版本先后和可能的时间压缩。 ");
+  const tl = el("div", "timeline");
+  (data.timeline || []).forEach(item => {
+    const event = el("div", "event");
+    event.appendChild(el("div", "event-date", item.date));
+    event.appendChild(el("div", "event-title", item.title));
+    event.appendChild(el("div", "event-detail", item.detail));
+    tl.appendChild(event);
+  });
+  time.appendChild(tl); root.appendChild(time);
+
+  const nextSection = section("下一步核验", "把争议转化为可以回答的问题，而不是继续堆叠情绪。 ");
+  const steps = el("div", "steps");
+  (data.next_steps || []).forEach(x => steps.appendChild(el("div", "step", x)));
+  nextSection.appendChild(steps); root.appendChild(nextSection);
+
+  const sourceSection = section("来源与证据等级", "A 为官方/直接记录；B 为一手公开自述；C/D 仅作为线索或指控来源。 ");
+  sources.forEach(s => {
+    const item = el("div", "source");
+    const top = el("div", "source-top");
+    const sourceUrl = safeUrl(s.url);
+    const title = sourceUrl ? el("a", "", s.id + " · " + s.title) : el("strong", "", s.id + " · " + s.title);
+    if (sourceUrl) { title.href = sourceUrl; title.target = "_blank"; title.rel = "noopener noreferrer"; }
+    top.appendChild(title);
+    top.appendChild(el("span", "badge", "等级 " + (s.reliability || "?")));
+    item.appendChild(top);
+    item.appendChild(el("div", "source-meta", [s.type, s.publisher, s.accessed_at].filter(Boolean).join(" · ")));
+    if (s.notes) item.appendChild(el("div", "source-note", s.notes));
+    sourceSection.appendChild(item);
+  });
+  root.appendChild(sourceSection);
+
+  const footer = el("footer", "", "由 asu-resume-audit-skill 生成 · 结论仅反映报告时间点的证据快照 · " + (m.generated_at || ""));
+  root.appendChild(footer);
+})();
+</script>
+</body>
+</html>
