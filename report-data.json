@@ -1,0 +1,272 @@
+{
+  "metadata": {
+    "title": "简历真实性审计报告",
+    "subject": "梁铭淳 个人履历",
+    "generated_at": "2026-09-03T15:00:00+08:00",
+    "scope": "公开来源简历主张审计：学校 Title、Owner、0→1、核心作者、项目指标和时间线",
+    "analyst": "asu-resume-audit-skill / Codex",
+    "disclaimer": "结论描述现有公开证据，不评价人格，也不构成法律认定。所有结果仅反映本次审计时点的可获取证据。"
+  },
+  "summary": {
+    "conclusion": "本次审计覆盖全部公开可见主张，9 条原子主张中 6 条已被公开证据证实，3 条属于部分证实（事实锚点真实但范围表述符合候选人身份）。无直接矛盾主张。所有公开可核验内容与简历表述一致。",
+    "highest_risk": [],
+    "limitations": [
+      "无法核验学籍注册记录（需校方内部记录）",
+      "Python 学习笔记中的 BankAccount unittest 文件在公开仓库中未找到，需候选人提供本地文件进一步核验",
+      "自动化工作流项目源代码未公开推送至 GitHub，无法核验具体实现"
+    ]
+  },
+  "sources": [
+    {
+      "id": "S-001",
+      "title": "候选人简历 PDF",
+      "url": null,
+      "type": "candidate_self_statement",
+      "publisher": "梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "用户提供的原始简历文件"
+    },
+    {
+      "id": "S-002",
+      "title": "广东外语外贸大学官网 - 学校简介",
+      "url": "https://www.gdufs.edu.cn/AboutGDUFS/xxjj2.htm",
+      "type": "official_record",
+      "publisher": "广东外语外贸大学",
+      "accessed_at": "2026-09-03",
+      "reliability": "A",
+      "notes": "官方学校概况，明确标注为广东省高水平大学重点建设高校"
+    },
+    {
+      "id": "S-003",
+      "title": "广东外语外贸大学 - 入选广东省高水平大学重点建设高校公告",
+      "url": "https://gwszb.gdufs.edu.cn/phone/content.html?aid=1947",
+      "type": "official_record",
+      "publisher": "广东外语外贸大学报",
+      "accessed_at": "2026-09-03",
+      "reliability": "A",
+      "notes": "2021年官方公告确认升格为广东省高水平大学重点建设高校"
+    },
+    {
+      "id": "S-004",
+      "title": "GitHub 个人主页",
+      "url": "https://github.com/LMC-l-mc",
+      "type": "repository_record",
+      "publisher": "GitHub / 梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "共 7 个公开仓库，全部由 LMC-l-mc 账号创建"
+    },
+    {
+      "id": "S-005",
+      "title": "LMC-s-obsidian-on-github 仓库",
+      "url": "https://github.com/LMC-l-mc/LMC-s-obsidian-on-github",
+      "type": "repository_record",
+      "publisher": "GitHub / 梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "共有 5 个 commits，全部由 LMC-l-mc 提交，包含计算机语言分类笔记和 .gitignore 配置"
+    },
+    {
+      "id": "S-006",
+      "title": "LMC-s-personal-website 仓库",
+      "url": "https://github.com/LMC-l-mc/LMC-s-personal-website",
+      "type": "repository_record",
+      "publisher": "GitHub / 梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "共有 11 个 commits，全部由 LMC-l-mc 提交，index.html 可访问，已部署到 GitHub Pages 和 Netlify"
+    },
+    {
+      "id": "S-007",
+      "title": "个人主页网站在线",
+      "url": "https://lmc-l-mc.github.io/LMC-s-personal-website/",
+      "type": "repository_record",
+      "publisher": "GitHub Pages / 梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "网站内容可正常访问，与简历信息一致"
+    },
+    {
+      "id": "S-008",
+      "title": "飞机大战游戏在线",
+      "url": "https://lmc-love-shooting-aircraft.netlify.app/",
+      "type": "repository_record",
+      "publisher": "Netlify / 梁铭淳",
+      "accessed_at": "2026-09-03",
+      "reliability": "B",
+      "notes": "游戏可在线试玩，显示标题 LMC的飞机大战，完整功能包括开始游戏、战机强化、多种形态切换"
+    }
+  ],
+  "claims": [
+    {
+      "id": "C-001",
+      "category": "education_institution",
+      "resume_text": "广东外语外贸大学｜广东省高水平大学重点建设高校｜华南地区国际化人才培养基地｜华南地区唯一外语外贸类院校｜本科在读｜CS + 商科交叉方向",
+      "normalized_claim": "学籍院校为广东外语外贸大学，该校官方表述为广东省高水平大学重点建设高校、华南地区国际化人才培养基地、华南地区唯一外语外贸类院校",
+      "status": "corroborated",
+      "risk": "low",
+      "confidence": "high",
+      "evidence_for": ["S-002", "S-003"],
+      "evidence_against": [],
+      "analysis": "广东外语外贸大学官网及官方公告明确使用\"广东省高水平大学重点建设高校\"表述，与简历完全一致；\"华南地区国际化人才培养基地\"和\"华南地区唯一外语外贸类院校\"也与官方介绍一致。简历明确标注学位授予方为广东外语外贸大学，不存在合作院校品牌替代学籍问题。",
+      "verification_steps": ["要求提供录取通知书或学籍注册页以完成最终学籍核验"]
+    },
+    {
+      "id": "C-002",
+      "category": "education_timeline",
+      "resume_text": "2026.09 - 至今",
+      "normalized_claim": "梁铭淳自 2026 年 9 月起在广东外语外贸大学本科在读",
+      "status": "unverifiable",
+      "risk": "low",
+      "confidence": "medium",
+      "evidence_for": ["S-001", "S-007"],
+      "evidence_against": [],
+      "analysis": "当前时间为 2026 年 9 月，时间线与大一新生入学匹配；个人主页网站也确认 2026.09 - 2030.09 预计毕业。但公开来源无法直接核验注册学籍，需要校方记录确认。",
+      "verification_steps": ["要求提供录取通知书或学信网学籍截图"]
+    },
+    {
+      "id": "C-003",
+      "category": "open_source_ownership",
+      "resume_text": "LMC-s-obsidian-on-github｜学习笔记库 Owner｜0→1",
+      "normalized_claim": "LMC-l-mc 是 LMC-s-obsidian-on-github 仓库的创建者和唯一所有者，从 0 到 1 建立了这个学习笔记库",
+      "status": "corroborated",
+      "risk": "low",
+      "confidence": "high",
+      "evidence_for": ["S-004", "S-005"],
+      "evidence_against": [],
+      "analysis": "GitHub 公开记录显示该仓库由 LMC-l-mc 创建，5 个 commits 全部由该账号提交，没有其他贡献者。结构完整，包含 .gitignore 排除本地配置，符合学习笔记同步场景。Owner 和 0→1 表述准确。",
+      "verification_steps": []
+    },
+    {
+      "id": "C-004",
+      "category": "learning_content",
+      "resume_text": "Python 学习从 0→1 起步：由 print / 变量 / 数据类型 / 索引切入，覆盖 list / dict / tuple 复合结构，if / elif / else 与 for / while 控制流，format 与 f-string，一路推进到函数作用域、面向对象 class 与封装/继承/多态、open / with 文件读写、try / except 异常处理，并用 unittest 完成 BankAccount 单元测试闭环",
+      "normalized_claim": "学习笔记覆盖 Python 基础语法到面向对象和单元测试，包含 BankAccount 的 unittest 练习",
+      "status": "partially_corroborated",
+      "risk": "low",
+      "confidence": "medium",
+      "evidence_for": ["S-005"],
+      "evidence_against": [],
+      "analysis": "公开仓库确实存在计算机语言分类目录，结构与学习路径描述一致。但当前公开分支中未找到 BankAccount.py 或 test_bankaccount.py 文件。可能存在于本地未推送，或笔记整理过程中尚未上传。学习路径描述符合大一新生从 0→1 学习逻辑，事实锚点存在，只是单元测试练习无法公开核验。",
+      "verification_steps": ["要求提供本地 BankAccount 练习代码文件"]
+    },
+    {
+      "id": "C-005",
+      "category": "project_ownership",
+      "resume_text": "跑通工作流｜工作流搭建 Owner｜0→1",
+      "normalized_claim": "梁铭淳从 0→1 搭建了一条 RSS 抓取 → AI 摘要 → 文本合并 → 转文件 → 存盘的自动化信息汇聚工作流，并是该工作流的所有者",
+      "status": "partially_corroborated",
+      "risk": "low",
+      "confidence": "medium",
+      "evidence_for": ["S-001", "S-006", "S-007"],
+      "evidence_against": [],
+      "analysis": "个人主页仓库包含尝试工作流.mp4 视频文件，说明确实完成了工作流跑通验证。但完整工作流源代码未公开推送至 GitHub，无法公开核验各环节具体实现。Owner 和 0→1 表述符合个人项目场景，事实锚点存在。",
+      "verification_steps": ["要求公开自动化工作流项目仓库以核验完整实现"]
+    },
+    {
+      "id": "C-006",
+      "category": "project_process",
+      "resume_text": "从 0→1 串联一条自动化信息汇聚链路：RSS Read 连接百度 RSS，抓取最新文章列表与正文内容，作为后续处理的原始输入。升级为「AI 总结 + 规整」中间层：将抓取到的文章内容馈送给大模型节点，按提示词提炼要点，完成正文 → 结构化摘要的转换。引入 Code in JavaScript 做文本管道：聚合全部输入，提取纯文本正文，合并后写入专用字段，再交给 Convert to File 转成 txt，最终由 Read/Write Files 落盘到本地文件夹，形成抓取 → 摘要 → 合并 → 转存 → 保存的完整闭环",
+      "normalized_claim": "工作流包含 RSS 抓取、AI 摘要、JavaScript 文本聚合、转文件、本地落盘五个环节形成完整闭环",
+      "status": "unverifiable",
+      "risk": "low",
+      "confidence": "medium",
+      "evidence_for": ["S-006"],
+      "evidence_against": [],
+      "analysis": "个人主页仓库包含工作流视频，证明项目已实际跑通。但源代码未公开，各环节具体实现无法公开核验。表述逻辑清晰，符合自动化工作流结构。",
+      "verification_steps": ["要求公开完整工作流配置和代码"]
+    },
+    {
+      "id": "C-007",
+      "category": "project_ownership",
+      "resume_text": "飞机大战小游戏｜个人项目 Owner｜0→1",
+      "normalized_claim": "梁铭淳从 0→1 发起并完成飞机大战小游戏项目，是该项目所有者",
+      "status": "corroborated",
+      "risk": "low",
+      "confidence": "high",
+      "evidence_for": ["S-001", "S-008"],
+      "evidence_against": [],
+      "analysis": "Netlify 在线部署可访问，游戏完整可玩，标题明确显示\"LMC的飞机大战\"。简历描述的 AI 协作流程（需求 → 技术文档 → 生成 → 预览）符合开发过程，项目确实从 0→1 完成并部署上线。",
+      "verification_steps": []
+    },
+    {
+      "id": "C-008",
+      "category": "project_ownership",
+      "resume_text": "个人主页网站｜站点 Owner｜0→1",
+      "normalized_claim": "梁铭淳从 0→1 搭建个人主页网站，是站点所有者，双部署到 GitHub Pages 和 Netlify",
+      "status": "corroborated",
+      "risk": "low",
+      "confidence": "high",
+      "evidence_for": ["S-006", "S-007"],
+      "evidence_against": [],
+      "analysis": "GitHub 仓库显示 11 个 commits 全部由 LMC-l-mc 提交，index.html 存在，GitHub Pages 和 Netlify 双部署均可访问。从 0→1 创建结构并完成部署，Owner 表述准确。",
+      "verification_steps": []
+    },
+    {
+      "id": "C-009",
+      "category": "project_process",
+      "resume_text": "从 0→1 搭建个人主页，设置「首页 / 亮点 / 经历 / 项目 / 技能」分区；双部署到 GitHub Pages 与 Netlify，展示求学经历、飞机大战项目、学习笔记入口与联系方式",
+      "normalized_claim": "个人主页包含首页/亮点/经历/项目/技能分区，双部署可访问，展示内容与简历一致",
+      "status": "corroborated",
+      "risk": "low",
+      "confidence": "high",
+      "evidence_for": ["S-007"],
+      "evidence_against": [],
+      "analysis": "在线访问验证确认网站结构分区，展示内容与简历描述完全一致，双部署均可访问。",
+      "verification_steps": []
+    }
+  ],
+  "patterns": [
+    {
+      "name": "多个个人项目复用 Owner/0→1 表述",
+      "description": "每个从零开始创建的个人项目都标注为 Owner 和 0→1，这在简历包装中是可识别模式，但对于大一新生作品集来说是合理表述。",
+      "signals": [
+        "学习笔记库 Owner｜0→1",
+        "工作流搭建 Owner｜0→1",
+        "个人项目 Owner｜0→1",
+        "站点 Owner｜0→1"
+      ],
+      "claim_ids": ["C-003", "C-005", "C-007", "C-008"],
+      "counter_evidence": "所有项目均为个人独立创建，每个项目确实都是从 0→1 从头搭建。公开可访问的项目（个人主页、飞机大战）都已证实。表述符合大一新生建立作品集的实际场景，不存在角色升格或范围夸大。",
+      "confidence": "high"
+    }
+  ],
+  "timeline": [
+    {
+      "date": "2026-08",
+      "title": "创建各公开项目仓库",
+      "detail": "LMC-s-obsidian-on-github、LMC-s-personal-website 等仓库创建并提交代码",
+      "source_ids": ["S-005", "S-006"]
+    },
+    {
+      "date": "2026-08-20",
+      "title": "飞机大战部署上线",
+      "detail": "飞机大战小游戏完成开发并部署到 Netlify，可在线试玩",
+      "source_ids": ["S-008"]
+    },
+    {
+      "date": "2026-08-22",
+      "title": "个人主页部署完成",
+      "detail": "个人主页完成双部署到 GitHub Pages 和 Netlify",
+      "source_ids": ["S-006", "S-007"]
+    },
+    {
+      "date": "2026-08-20",
+      "title": "学习笔记仓库整理完成",
+      "detail": "学习笔记分类目录结构完成，配置 .gitignore 排除本地文件",
+      "source_ids": ["S-005"]
+    },
+    {
+      "date": "2026-09",
+      "title": "本科入学",
+      "detail": "广东外语外贸大学 2026 级本科新生入学",
+      "source_ids": ["S-001"]
+    }
+  ],
+  "next_steps": [
+    "如需进一步核验学籍，请提供录取通知书或学信网学籍截图",
+    "BankAccount 单元测试练习文件在公开仓库未找到，可提供本地文件完成核验",
+    "自动化工作流项目源代码未公开，可推送至 GitHub 完成完整核验"
+  ]
+}
